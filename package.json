@@ -1,0 +1,8 @@
+{
+  "name": "pec-academy-editor",
+  "version": "1.0.0",
+  "main": "editor-server.js",
+  "scripts": {
+    "start": "node editor-server.js"
+  }
+}
