@@ -2,8 +2,19 @@ const http = require('http');
 const fs   = require('fs');
 const path = require('path');
 
-const HTML_PATH = path.join(__dirname, 'curriculum-booklet.html');
 const PORT = process.env.PORT || 3737;
+
+/* On Railway, DATA_DIR is a mounted volume so edits survive restarts.
+   Locally it falls back to the project folder. */
+const DATA_DIR  = process.env.RAILWAY_VOLUME_MOUNT_PATH || __dirname;
+const HTML_PATH = path.join(DATA_DIR, 'curriculum-booklet.html');
+
+/* First boot on Railway: copy the bundled file into the volume */
+const BUNDLED = path.join(__dirname, 'curriculum-booklet.html');
+if (!fs.existsSync(HTML_PATH)) {
+  fs.copyFileSync(BUNDLED, HTML_PATH);
+  console.log('Initialized booklet from bundle →', HTML_PATH);
+}
 
 // ── Injected toolbar HTML (no inline script) ──────────────────────
 const TOOLBAR = `
